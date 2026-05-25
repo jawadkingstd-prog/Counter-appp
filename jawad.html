@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Advanced Prime Counter - Professional Analytics Dashboard">
+    <title>Counter Pro - Advanced Analytics</title>
+    
+    <style>
+        /* ============================================
+           ADVANCED CSS - Dark Theme (Black & Sea Blue)
+           ============================================ */
+
+        :root {
+            --dark-black: #0a0e27;
+            --darker-black: #050810;
+            --sea-blue: #1b4965;
+            --sea-blue-light: #2d6a8f;
+            --sea-blue-lighter: #4a8fc7;
+            --light-gray: #d4d4d8;
+            --gray-600: #71717a;
+            --gray-800: #27272a;
+            --white: #ffffff;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #dccccc;
+            --accent-cyan: #06b6d4;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ============================================
+           BODY - Dark Premium Theme
+           ============================================ */
+        body {
+            font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--darker-black) 0%, var(--dark-black) 50%, var(--darker-black) 100%);
+            color: var(--light-gray);
+            min-height: 100vh;
+            padding: 20px;
+            animation: bodyLoad 1s ease-out;
+        }
+
+        @keyframes bodyLoad {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(27, 73, 101, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(58, 130, 247, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ============================================
+           MAIN WRAPPER - Grid Layout
+           ============================================ */
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+           PRIMARY CARD - Counter Control
+           ============================================ */
+        .primary-card {
+            background: linear-gradient(135deg, var(--dark-black) 0%, var(--sea-blue) 100%);
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: var(--shadow-xl), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(74, 143, 199, 0.2);
+        }
+
+        .primary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sea-blue-light), var(--accent-cyan), var(--accent-blue));
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .primary-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 40px 80px rgba(27, 73, 101, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            border-color: rgba(74, 143, 199, 0.4);
+        }
+
+        /* ============================================
+           HEADER WITH THEME TOGGLE
+           ============================================ */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .theme-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            border: 2px solid var(--sea-blue-light);
+            background: rgba(74, 143, 199, 0.1);
+            cursor: pointer;
+            font-size: 24px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(74, 143, 199, 0.2);
+            transform: rotate(20deg);
+            border-color: var(--accent-cyan);
+        }
+
+        /* ============================================
+           COUNTER DISPLAY - Premium Box
+           ============================================ */
+        .counter-display {
+            background: linear-gradient(135deg, rgba(27, 73, 101, 0.3) 0%, rgba(45, 106, 143, 0.2) 100%);
+            border: 2px solid var(--sea-blue-light);
+            border-radius: 16px;
+            padding: 50px 30px;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .counter-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 45deg, var(--sea-blue-light), var(--accent-blue), var(--sea-blue-light));
+            animation: rotate 8s linear infinite;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .counter-label {
+            color: var(--light-gray);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        #counter {
+            font-size: 96px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-variant-numeric: tabular-nums;
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        #counter:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 8px 24px rgba(58, 130, 247, 0.4));
+        }
+
+        /* ============================================
+           CONTROL BUTTONS - Grid Layout
+           ============================================ */
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .button-group-primary {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        button {
+            padding: 18px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, var(--sea-blue) 0%, var(--sea-blue-light) 100%);
+            color: var(--white);
+        }
+
+        button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-cyan);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* ========== INCREASE BUTTON (Green) ========== */
+        #increaseBtn {
+            background: linear-gradient(135deg, var(--accent-green) 0%, #059669 100%);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        #increaseBtn:hover {
+            background: linear-gradient(135deg, #059669 0%, var(--accent-green) 100%);
+            box-shadow: 0 12px 24px rgba(16, 185, 129, 0.3);
+            border-color: var(--accent-green);
+        }
+
+        /* ========== DECREASE BUTTON (Red) ========== */
+        #decreaseBtn {
+            background: linear-gradient(135deg, var(--accent-red) 0%, #dc2626 100%);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        #decreaseBtn:hover {
+            background: linear-gradient(135deg, #dc2626 0%, var(--accent-red) 100%);
+            box-shadow: 0 12px 24px rgba(239, 68, 68, 0.3);
+            border-color: var(--accent-red);
+        }
+
+        /* ========== RESET BUTTON (Blue) ========== */
+        #resetBtn {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        #resetBtn:hover {
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            box-shadow: 0 12px 24px rgba(59, 130, 246, 0.3);
+            border-color: var(--accent-cyan);
+        }
+
+        /* ============================================
+           SECONDARY BUTTONS - Increment by 5
+           ============================================ */
+        .increment-group {
+            display: flex;
+            gap: 12px;
+            animation: slideInLeft 0.6s ease-out 0.4s both;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .increment-group button {
+            flex: 1;
+            padding: 13px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--sea-blue-light) 0%, var(--accent-cyan) 100%);
+            border-color: rgba(74, 143, 199, 0.5);
+        }
+
+        .increment-group button:hover {
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            box-shadow: 0 6px 25px rgba(58, 130, 247, 0.3);
+            border-color: var(--accent-cyan);
+        }
+
+        /* ============================================
+           STATS CARD - Analytics Dashboard
+           ============================================ */
+        .stats-card {
+            background: linear-gradient(135deg, var(--dark-black) 0%, var(--sea-blue) 100%);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-xl), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(74, 143, 199, 0.2);
+            transition: var(--transition);
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan), var(--sea-blue-light));
+        }
+
+        .stats-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 40px 80px rgba(27, 73, 101, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            border-color: rgba(74, 143, 199, 0.4);
+        }
+
+        .stats-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--light-gray);
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(74, 143, 199, 0.2);
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--light-gray);
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ============================================
+           HISTORY SECTION
+           ============================================ */
+        .history-container {
+            margin-top: 30px;
+        }
+
+        .history-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--light-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(27, 73, 101, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(74, 143, 199, 0.2);
+        }
+
+        .history-item {
+            background: rgba(10, 14, 39, 0.5);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--accent-cyan);
+            animation: slideInRight 0.4s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .history-action {
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .history-time {
+            font-size: 11px;
+            color: var(--gray-600);
+        }
+
+        /* ============================================
+           PROGRESS BAR
+           ============================================ */
+        .progress-section {
+            margin-top: 30px;
+        }
+
+        .progress-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--light-gray);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(27, 73, 101, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(74, 143, 199, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            width: 0%;
+            transition: width 0.4s ease-out;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(58, 130, 247, 0.5);
+        }
+
+        /* ============================================
+           CONTROL BUTTONS
+           ============================================ */
+        .control-button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, rgba(74, 143, 199, 0.2) 0%, rgba(45, 106, 143, 0.2) 100%);
+            color: var(--light-gray);
+            font-size: 12px;
+            border-color: rgba(74, 143, 199, 0.3);
+        }
+
+        .control-btn:hover {
+            background: linear-gradient(135deg, rgba(74, 143, 199, 0.3) 0%, rgba(45, 106, 143, 0.3) 100%);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        /* ============================================
+           RESPONSIVE DESIGN
+           ============================================ */
+        @media (max-width: 768px) {
+            .wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            #counter {
+                font-size: 72px;
+            }
+
+            .primary-card, .stats-card {
+                padding: 30px 20px;
+            }
+
+            .button-grid {
+                gap: 10px;
+            }
+
+            button {
+                padding: 15px 15px;
+                font-size: 12px;
+            }
+        }
+
+        /* ============================================
+           SCROLLBAR STYLING
+           ============================================ */
+        .history-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .history-list::-webkit-scrollbar-track {
+            background: rgba(27, 73, 101, 0.1);
+            border-radius: 10px;
+        }
+
+        .history-list::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 10px;
+        }
+
+        .history-list::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-blue);
+        }
+
+        /* ============================================
+           LIGHT MODE (Original Theme)
+           ============================================ */
+        body.light-mode {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8eef5 50%, #f8f9fa 100%);
+        }
+
+        body.light-mode .primary-card,
+        body.light-mode .stats-card {
+            background: linear-gradient(135deg, var(--white) 0%, #f0f7ff 100%);
+            color: var(--dark-black);
+            border-color: rgba(27, 73, 101, 0.2);
+        }
+
+        body.light-mode .header h1 {
+            color: var(--sea-blue);
+        }
+
+        body.light-mode .counter-display {
+            background: linear-gradient(135deg, rgba(58, 130, 247, 0.1) 0%, rgba(27, 73, 101, 0.05) 100%);
+            border-color: var(--sea-blue-light);
+        }
+
+        body.light-mode .counter-label,
+        body.light-mode .stat-label,
+        body.light-mode .history-title,
+        body.light-mode .progress-label {
+            color: var(--sea-blue);
+        }
+
+        body.light-mode .history-list {
+            background: rgba(27, 73, 101, 0.08);
+            border-color: rgba(27, 73, 101, 0.2);
+        }
+
+        body.light-mode .history-item {
+            background: var(--white);
+            border-left-color: var(--accent-blue);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .control-btn {
+            background: rgba(27, 73, 101, 0.1);
+            color: var(--sea-blue);
+            border-color: rgba(27, 73, 101, 0.2);
+        }
+
+        body.light-mode .control-btn:hover {
+            background: rgba(27, 73, 101, 0.15);
+        }
+
+        body.light-mode .progress-bar {
+            background: rgba(27, 73, 101, 0.1);
+            border-color: rgba(27, 73, 101, 0.2);
+        }
+
+        body.light-mode .stat-item {
+            border-bottom-color: rgba(27, 73, 101, 0.1);
+        }
+
+        body.light-mode button {
+            background: linear-gradient(135deg, var(--sea-blue) 0%, var(--sea-blue-light) 100%);
+            border-color: rgba(27, 73, 101, 0.3);
+        }
+    </style>
+</head>
+<body><head>
+    <meta charset="UTF-8">
+    <div class="wrapper">
+        
+        <div class="primary-card">
+           
+            <div class="header">
+                <h1>Counter Pro</h1>
+                <button class="theme-toggle" id="themeToggle" title="Toggle Light Mode">☀️</button>
+            </div>
+
+          
+            <div class="counter-display">
+                <p class="counter-label">📊 Current Value</p>
+                <p id="counter">0</p>
+            </div>
+
+           
+            <div class="button-grid">
+                <div class="button-group-primary">
+                    <button id="decreaseBtn">
+                        <span>➖</span>
+                        <span>Decrease</span>
+                    </button>
+                    <button id="resetBtn">
+                        <span>🔄</span>
+                        <span>Reset</span>
+                    </button>
+                    <button id="increaseBtn">
+                        <span>➕</span>
+                        <span>Increase</span>
+                    </button>
+                </div>
+
+                <!-- Secondary Controls -->
+                <button id="minus5Btn" class="secondary-btn" style="background: linear-gradient(135deg, var(--sea-blue-light) 0%, var(--accent-cyan) 100%);">
+                    <span>⬇️ -5</span>
+                </button>
+                <button id="plus5Btn" class="secondary-btn" style="background: linear-gradient(135deg, var(--sea-blue-light) 0%, var(--accent-cyan) 100%);">
+                    <span>⬆️ +5</span>
+                </button>
+            </div>
+
+            <!-- Advanced Controls -->
+            <div class="control-button-group">
+                <button id="undoBtn" class="control-btn">↶ Undo</button>
+                <button id="redoBtn" class="control-btn">↷ Redo</button>
+                <button id="clearHistoryBtn" class="control-btn">🗑️ Clear</button>
+                <button id="exportBtn" class="control-btn">💾 Export</button>
+            </div>
+        </div>
+
+       
+        <div class="stats-card">
+            <h2 class="stats-title">📈 Analytics</h2>
+
+            <!-- Statistics -->
+            <div class="stat-item">
+                <span class="stat-label">Peak Value</span>
+                <span class="stat-value" id="peakStat">0</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">Lowest Value</span>
+                <span class="stat-value" id="lowestStat">0</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">Total Changes</span>
+                <span class="stat-value" id="changesStat">0</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">Avg Change</span>
+                <span class="stat-value" id="avgStat">0</span>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="progress-section">
+                <p class="progress-label">Current Progress</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+           
+            <div class="history-container">
+                <h3 class="history-title">📝 Action History</h3>
+                <div class="history-list" id="historyList">
+                    <div style="color: var(--gray-600); text-align: center; padding: 20px;">
+                        No history yet...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <script>
+        
+let count = 0;
+
+
+const counterDisplay = document.getElementById('counter');
+const increaseBtn = document.getElementById('increaseBtn');
+const decreaseBtn = document.getElementById('decreaseBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+
+function updateDisplay() {
+    counterDisplay.textContent = count;
+}
+
+
+increaseBtn.addEventListener('click', function() {
+    count = count + 1;
+    updateDisplay();
+});
+
+// Decrease button
+decreaseBtn.addEventListener('click', function() {
+    count = count - 1;
+    updateDisplay();
+});
+
+// Reset button
+resetBtn.addEventListener('click', function() {
+    count = 0;
+    updateDisplay();
+});
+    </script>
+</body>
+</html>
